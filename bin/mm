@@ -84,12 +84,12 @@ while [ $mm_count -le $mm_max ]; do
   message " `printf \"%-15s %2d/%d\" mm $mm_count $mm_max`"
   sleep 2
 
-  message "Running mm-ingest-ctrl"
-  ./`dirname $0`/mm-ingest-ctrl | tee $LOGFILE
+  # message "Running mm-ingest-ctrl"
+  # ./`dirname $0`/mm-ingest-ctrl | tee $LOGFILE
 
   # message "Running mm-ingest-ctrl"
-  (./`dirname $0`/mm-ingest-ctrl; echo $$ >&3 | tee $LOGFILE ) & 3>$CTRL_PID
-  wait $(<$CTRL_PID)
+  ./`dirname $0`/mm-ingest-ctrl &
+  wait $!
   mm_count=$(($mm_count + 1))
 done
 
