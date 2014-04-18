@@ -17,11 +17,13 @@ quit_nicely(){
   echo "I got asked to quit: $$"
   sleep 2
   echo quitting
-  rm -f $tmp.?
+  if [ -n "$CTRL_PID" ]; then
+    rm -f $CTRL_PID
+  fi
 }
 # delete any existing temp files
 trap "rm -f $tmp.?; exit 1" 0 1 2 3 13 15
-trap 'quit_nicely; exit 0' 10
+trap "quit_nicely; rm -f $tmp.?; exit 0" 10
 # then do
 #   ...real work that creates temp files $tmp.1, $tmp.2, ...
 
@@ -70,6 +72,12 @@ shift $((OPTIND-1))
 ################################################################################
 ### THESCRIPT
 
+if [ -n "$CTRL_PID" ]; then
+  message "Writing PID to $CTRL_PID"
+  echo $$ > $CTRL_PID
+else
+  message "CTRL_PID not set"
+fi
 
 mic_count=1
 mic_max=10
@@ -87,6 +95,9 @@ while [ $mic_count -le $mic_max ]; do
   mic_count=$(($mic_count + 1))
 done
 
+if [ -n "$CTRL_PID" ]; then
+  rm -f $CTRL_PID
+fi
 
 
 ################################################################################
