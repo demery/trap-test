@@ -72,12 +72,12 @@ shift $((OPTIND-1))
 ################################################################################
 ### THESCRIPT
 
-if [ -n "$CTRL_PID" ]; then
-  message "Writing PID to $CTRL_PID"
-  echo $$ > $CTRL_PID
-else
-  message "CTRL_PID not set"
-fi
+# if [ -n "$CTRL_PID" ]; then
+#   message "Writing PID to $CTRL_PID"
+#   echo $$ > $CTRL_PID
+# else
+#   message "CTRL_PID not set"
+# fi
 
 mic_count=1
 mic_max=10
@@ -95,9 +95,9 @@ while [ $mic_count -le $mic_max ]; do
   mic_count=$(($mic_count + 1))
 done
 
-if [ -n "$CTRL_PID" ]; then
-  rm -f $CTRL_PID
-fi
+# if [ -n "$CTRL_PID" ]; then
+#   rm -f $CTRL_PID
+# fi
 
 
 ################################################################################

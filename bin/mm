@@ -27,7 +27,7 @@ quit_mm_nicely() {
 # delete any existing temp files
 # trap "rm -f $tmp.?; exit 1" 0 1 2 3 13 15
 # trip SIGUSR1 and quit nicely
-trap 'quit_mm_nicely; exit 0' 1 2 3 13 15
+trap 'quit_mm_nicely; exit 0' 1 2 3 10 13 15
 # then do
 #   ...real work that creates temp files $tmp.1, $tmp.2, ...
 
@@ -88,8 +88,8 @@ while [ $mm_count -le $mm_max ]; do
   ./`dirname $0`/mm-ingest-ctrl | tee $LOGFILE
 
   # message "Running mm-ingest-ctrl"
-  # (./`dirname $0`/mm-ingest-ctrl & echo $! >&3 ) 3>$CTRL_PID | tee $LOGFILE
-  # wait $(<$CTRL_PID)
+  (./`dirname $0`/mm-ingest-ctrl; echo $$ >&3 | tee $LOGFILE ) & 3>$CTRL_PID
+  wait $(<$CTRL_PID)
   mm_count=$(($mm_count + 1))
 done
 
